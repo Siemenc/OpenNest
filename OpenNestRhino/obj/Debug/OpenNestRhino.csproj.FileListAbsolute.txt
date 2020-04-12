@@ -11,3 +11,12 @@ C:\Users\petra\OneDrive\02_VisualStudio\OpenNest-master\OpenNest-master\OpenNest
 C:\Users\petra\OneDrive\02_VisualStudio\OpenNest-master\OpenNest-master\OpenNestRhino\obj\Debug\OpenNestRhino.pdb
 C:\Users\petra\AppData\Roaming\Grasshopper\Libraries\OpenNest\OpenNestRhino.dll
 C:\Users\petra\AppData\Roaming\Grasshopper\Libraries\OpenNest\OpenNestRhino.pdb
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\obj\Debug\OpenNestRhino.csprojAssemblyReference.cache
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\obj\Debug\OpenNestRhino.csproj.CoreCompileInputs.cache
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\obj\Debug\OpenNestRhino.dll
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\obj\Debug\OpenNestRhino.pdb
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\bin\OpenNestRhino.dll
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\bin\OpenNestRhino.pdb
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\bin\OpenNestLib.dll
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\bin\OpenNestMinkowskiWrapper.dll
+C:\Users\Siemen\Documents\GitHub\OpenNest\OpenNestRhino\obj\Debug\OpenNestRhino.csproj.CopyComplete
