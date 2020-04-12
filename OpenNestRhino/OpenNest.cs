@@ -27,16 +27,17 @@ namespace OpenNestRhino {
         //List<IGH_GeometricGoo> geo = new List<IGH_GeometricGoo>();
         //    List<IGH_GeometricGoo> geo_Original = new List<IGH_GeometricGoo>();
 
-        double spacing = 0;
+        int iterations = 1;
+        double spacing = 10;
         int placementType = 1;
         double tolerance = 0.1;
         int rotations = 4;
-        int iterations = 0;
+        int seed = 0;
+        double cp = 0.01;
+
         double x = 0;
         int n = 0;
-        int seed = 0;
         bool oneSheet = false;
-        double cp = 0.01;
 
         public NestingContext Context;
 
@@ -61,17 +62,26 @@ namespace OpenNestRhino {
             Rhino.Input.Custom.GetOption gp = new Rhino.Input.Custom.GetOption();
             gp.SetCommandPrompt("OpenNest: Set nesting settings");
 
-            Rhino.Input.Custom.OptionInteger Iterations = new Rhino.Input.Custom.OptionInteger(1, 1, 100);
-            Rhino.Input.Custom.OptionDouble Spacing = new Rhino.Input.Custom.OptionDouble(0.01, 0.001, 10);
-            Rhino.Input.Custom.OptionInteger Placement = new Rhino.Input.Custom.OptionInteger(1, 0, 4);
-            Rhino.Input.Custom.OptionDouble Tolerance = new Rhino.Input.Custom.OptionDouble(0.1, 0.01, 10);
-            Rhino.Input.Custom.OptionInteger Rotations = new Rhino.Input.Custom.OptionInteger(4, 0, 360);
-            Rhino.Input.Custom.OptionInteger Seed = new Rhino.Input.Custom.OptionInteger(0, 1, 100);
-            Rhino.Input.Custom.OptionDouble ClosestObjects = new Rhino.Input.Custom.OptionDouble(0.01, 0, 100);
+            //Get settings from memory
+            int iterationVal = Settings.GetInteger("ONIterVal", iterations);
+            double spacingVal = Settings.GetDouble("ONSpacVal", spacing);
+            //int placementVal = Settings.GetInteger("ONPlaceVal", placementType);
+            double toleranceVal = Settings.GetDouble("ONTolVal", tolerance);
+            int rotationsVal = Settings.GetInteger("ONRotVal", rotations);
+            int seedVal = Settings.GetInteger("ONSeedVal", seed);
+            double closestObjVal = Settings.GetDouble("ONClosObjVal", cp);
+
+            Rhino.Input.Custom.OptionInteger Iterations = new Rhino.Input.Custom.OptionInteger(iterationVal, 1, 100);
+            Rhino.Input.Custom.OptionDouble Spacing = new Rhino.Input.Custom.OptionDouble(spacingVal, 0.001, 100);
+            //Rhino.Input.Custom.OptionInteger Placement = new Rhino.Input.Custom.OptionInteger(placementVal, 0, 4);
+            Rhino.Input.Custom.OptionDouble Tolerance = new Rhino.Input.Custom.OptionDouble(toleranceVal, 0.01, 10);
+            Rhino.Input.Custom.OptionInteger Rotations = new Rhino.Input.Custom.OptionInteger(rotationsVal, 1, 360);
+            Rhino.Input.Custom.OptionInteger Seed = new Rhino.Input.Custom.OptionInteger(seedVal, 1, 100);
+            Rhino.Input.Custom.OptionDouble ClosestObjects = new Rhino.Input.Custom.OptionDouble(closestObjVal, 0, 100);
 
             gp.AddOptionInteger("Iterations", ref Iterations);
             gp.AddOptionDouble("Spacing", ref Spacing);
-            gp.AddOptionInteger("Placement", ref Placement);
+            //gp.AddOptionInteger("Placement", ref Placement);
             gp.AddOptionDouble("Tolerance", ref Tolerance);
             gp.AddOptionInteger("Rotations", ref Rotations);
             gp.AddOptionInteger("Seed", ref Seed);
@@ -82,6 +92,15 @@ namespace OpenNestRhino {
                 if (gp.CommandResult() != Rhino.Commands.Result.Success)
                     break;
             }
+
+            //Set settings in memory
+            Settings.SetInteger("ONIterVal", Iterations.CurrentValue);
+            Settings.SetDouble("ONSpacVal", Spacing.CurrentValue);
+            //Settings.SetInteger("ONPlaceVal", Placement.CurrentValue);
+            Settings.SetDouble("ONTolVal", Placement.CurrentValue);
+            Settings.SetInteger("ONRotVal", Rotations.CurrentValue);
+            Settings.SetInteger("ONSeedVal", Seed.CurrentValue);
+            Settings.SetDouble("ONClosObjVal", ClosestObjects.CurrentValue);
 
             this.iterations = Iterations.CurrentValue;
             this.spacing = Spacing.CurrentValue;
@@ -404,7 +423,7 @@ namespace OpenNestRhino {
 
        
             //4. Nest
-            //System.Threading.Tasks.Task.Run(() => {
+            //System.Threading.Tasks.Task.Run(() => { -- COMMENTED out to be able to UNDO + Redraw views automatically
             Nest(sheets, outlines, ref data);
             //});
 
