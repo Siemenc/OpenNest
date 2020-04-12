@@ -97,14 +97,14 @@ namespace OpenNestRhino {
             Settings.SetInteger("ONIterVal", Iterations.CurrentValue);
             Settings.SetDouble("ONSpacVal", Spacing.CurrentValue);
             //Settings.SetInteger("ONPlaceVal", Placement.CurrentValue);
-            Settings.SetDouble("ONTolVal", Placement.CurrentValue);
+            Settings.SetDouble("ONTolVal", Tolerance.CurrentValue);
             Settings.SetInteger("ONRotVal", Rotations.CurrentValue);
             Settings.SetInteger("ONSeedVal", Seed.CurrentValue);
             Settings.SetDouble("ONClosObjVal", ClosestObjects.CurrentValue);
 
             this.iterations = Iterations.CurrentValue;
             this.spacing = Spacing.CurrentValue;
-            this.placementType = Placement.CurrentValue;
+            //this.placementType = Placement.CurrentValue;
             this.tolerance = Tolerance.CurrentValue;
             this.rotations = Rotations.CurrentValue;
             this.seed = Seed.CurrentValue;
@@ -127,7 +127,6 @@ namespace OpenNestRhino {
                 if (curve == null)
                     return null;
                 sheetsCurve.Add(curve);
-
             }
 
             if (sheetsCurve.Count == 0) {
@@ -137,16 +136,26 @@ namespace OpenNestRhino {
                 Rhino.RhinoApp.WriteLine("OpenNest: Number of sheets: " + sheetsCurve.Count.ToString());
             }
 
-            List<Polyline> sheets = sheetsCurve.ToPolylines(true);
+
+            List<Polyline> sheets;
+            try
+            {
+                sheets = sheetsCurve.ToPolylines(true);
+            }
+            catch
+            {
+                Rhino.RhinoApp.WriteLine("OpenNest: Cannot convert sheet to polyline");
+                return null;
+            }
 
             if (sheets.Count == 0) {
-                Rhino.RhinoApp.WriteLine("OpenNest: No sheets selectected: " + sheetsCurve.Count.ToString());
+                Rhino.RhinoApp.WriteLine("OpenNest: Cannot convert sheet to polyline");
                 return null;
             }
 
 
-            if (sheets.Count == 1) {
-
+            if (sheets.Count == 1)
+            {
                 Polyline sheetCopy = new Polyline(sheets[0]);
                 sheets.Clear();
 
@@ -154,15 +163,17 @@ namespace OpenNestRhino {
                 Point3d p1 = sheetCopy.BoundingBox.PointAt(1, 0, 0);
                 Vector3d vec = p1 - p0;
                 x = (p1.X - p0.X + this.spacing) / this.tolerance;
-                for (int i = 0; i < 99; i++) {
+                for (int i = 0; i < 99; i++)
+                {
                     sheets.Add(sheetCopy);
                 }
-            } else {
+            }
+            else
+            {
                 this.x = 0;
             }
             
             return sheets;
-
         }
 
         private Tuple<Brep[], Dictionary<int, List<Guid>>> GetObjectsToNest(){
@@ -185,7 +196,6 @@ namespace OpenNestRhino {
             go.EnableClearObjectsOnEntry(true);
             go.EnableUnselectObjectsOnExit(true);
             go.DeselectAllBeforePostSelect = false;
-
 
             bool bHavePreselectedObjects = false;
 
