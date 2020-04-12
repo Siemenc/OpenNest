@@ -404,9 +404,9 @@ namespace OpenNestRhino {
 
        
             //4. Nest
-            System.Threading.Tasks.Task.Run(() => {
+            //System.Threading.Tasks.Task.Run(() => {
             Nest(sheets, outlines, ref data);
-            });
+            //});
 
             Rhino.RhinoApp.WriteLine("OpenNest: Nesting... Keep working while the nesting finishes.");
 
